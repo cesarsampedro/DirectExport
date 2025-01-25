@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=Krita/PythonPlugin
+X-KDE-Library=direct_export
+X-Python-2-Compatible=false
+X-Krita-Manual=Manual.html
+Name=Direct Export
+Comment=Export files to your last used location with all settings saved in your .kra file using a single shortcut.

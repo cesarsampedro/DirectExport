@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ActionCollection version="2" name="Scripts">
+  <Actions category="Scripts">
+    <text>Direct Export</text>
+
+    <Action name="direct_export">
+      <icon></icon>
+      <text>Direct Export</text>
+      <whatsThis></whatsThis>
+      <toolTip>Auto-export image to the correct directory.</toolTip>
+      <iconText></iconText>
+      <activationFlags>10000</activationFlags>
+      <activationConditions>0</activationConditions>
+      <shortcut></shortcut>
+      <isCheckable>false</isCheckable>
+      <statusTip></statusTip>
+    </Action>
+  </Actions>
+</ActionCollection>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Direct Export Plugin - Documentation</title>
+</head>
+<body>
+    <h1>Direct Export Plugin for Krita</h1>
+    
+    <h2>Overview</h2>
+    <p>
+        Direct Export is a Krita plugin that lets you export files to your last used location with all settings saved in your .kra file using a single shortcut.
+    </p>
+
+    <h2>Features</h2>
+    <ul>
+        <li>Quick export using a shortcut (customizable in Settings)</li>
+        <li>Remembers your last export location and settings per file stored within your .kra file</li>
+        <li>Supports multiple image formats (PNG, TGA, GIF, ...)</li>
+        <li>Visual feedback with temporary export confirmation</li>
+        <li>Optimized for game development workflow</li>
+    </ul>
+
+    <h2>Installation</h2>
+    <p>To install the Direct Export plugin:</p>
+    <ol>
+        <li>Copy the folders actions and pykrita to your Krita resoruces folder
+            <ul>
+                <li>Windows: <code>%APPDATA%\krita\</code></li>
+                <li>Linux: <code>~/.local/share/krita/</code></li>
+                <li>macOS: <code>~/Library/Application Support/Krita/</code></li>
+            </ul>
+        </li>
+        <li>Restart Krita</li>
+        <li>Enable the plugin in Krita's Settings → Configure Krita → Python Plugins</li>
+        <li>To customize the shortcut:
+            <ul>
+                <li>Go to Settings → Configure Krita → Keyboard Shortcuts</li>
+                <li>Search for "Direct Export" in the actions list</li>
+                <li>Click on the shortcut column and press your desired key combination</li>
+                <li>Click OK to save the changes</li>
+            </ul>
+        </li>
+    </ol>
+
+    <h2>Usage</h2>
+    <h3>First Export</h3>
+    <ol>
+        <li>Open the Direct Export docker (Settings → Dockers → Direct Export)</li>
+        <li>Click the folder icon to select your export location and format</li>
+        <li>Your export settings will be saved within the .kra file</li>
+    </ol>
+
+    <h3>Subsequent Exports</h3>
+    <p>Once you've set up your initial export location, you can:</p>
+    <ul>
+        <li>Press the shortcut key (or the arrow button at the docker) to quickly export to the same location</li>
+        <li>Use the folder button to change the export location & seetings whenever you want </li>
+    </ul>
+
+    <p><strong>Note:</strong> Export settings are saved per .kra file, allowing different export configurations for each of your source game assets.</p>
+
+    <h2>Export Settings</h2>
+    <p>The plugin supports various export formats with their respective settings:</p>
+
+    <p><strong>Important:</strong> The plugin only works with saved .kra files. Make sure to save your document before attempting to export.</p>
+
+    <h2>Troubleshooting</h2>
+    <h3>Status Messages</h3>
+    <ul>
+        <li>If you see <strong>"-- Image not exported yet --"</strong> in the file path display, it means you need to set up the initial export location by clicking the folder icon.</li>
+        <li>If you see <strong>"-- Not a Krita file --"</strong>, you need to save your document as a .kra file before using the plugin.</li>
+        <li>If the export button (arrow icon) is not visible, ensure you have set up a valid export path first.</li>
+        <li>If the file was exported with a newer version, the plugin will warn you, so install a more recent version.</li>
+    </ul>
+
+    <h2>Author & Contact</h2>
+    <p>
+        Created by César Sampedro<br>
+        Website: <a href="http://www.cesarsampedro.com">www.cesarsampedro.com</a><br>
+        Contact: <a href="mailto:cesarsampedro+krita@gmail.com">cesarsampedro+krita@gmail.com</a>
+        This plugin is completely free, but if you'd like to buy me a coffee, here's the link:<br>
+        <a href="https://www.paypal.com/donate/?hosted_button_id=S3LP5V27MNY64">https://www.paypal.com/donate/?hosted_button_id=S3LP5V27MNY64</a>
+    </p>
+</body>
+</html>
