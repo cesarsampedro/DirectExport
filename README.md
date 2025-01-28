@@ -9,7 +9,8 @@ To install the plugin
 1. Download the zip file in the https://github.com/cesarsampedro/DirectExport/releases/
 2. Open Krita and go to Tools/Scripts/Import_Python_plugin_from_File and select the .zip file.
 3. Go to Settings/Configure Krita/Keyboard Shortcuts and look for "Direct Export" and setup a shortcut like F12.
-4. Open the Direct Export docker (Settings/Dockers/DirectExport) and it will appear in your krita UI
+4. Open the Direct Export docker (Settings/Dockers/DirectExport) and it will appear in your krita UI.
+[![](https://img.youtube.com/vi/q7Q_sDadY_E/0.jpg)](https://www.youtube.com/watch?v=q7Q_sDadY_E)
 
 ### How it works
 At the Direct Export Docker click the folder icon to select your export 
