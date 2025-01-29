@@ -16,6 +16,7 @@ At the Direct Export Docker click the folder icon to select your export
 location and format, you could use the shortcut too.
 Your export settings will be saved within the .kra file
 Press the shortcut key (or the arrow button at the docker) to quickly export to the same location & settings.
+
 [![](https://img.youtube.com/vi/pzXmCEp15Mk/0.jpg)](https://www.youtube.com/watch?v=pzXmCEp15Mk)
 
 ## Follow me
