@@ -30,6 +30,6 @@ https://www.paypal.com/donate/?hosted_button_id=S3LP5V27MNY64
 
 
 ## Special thanks (testing)
-Víctor Fernández
-David Revoy
-Maciej Rudnicki
+- Víctor Fernández
+- David Revoy
+- Maciej Rudnicki
