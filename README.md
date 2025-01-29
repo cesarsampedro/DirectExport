@@ -1,7 +1,6 @@
 # DirectExport
 Direct Export is a Krita plugin that lets you export files to your last used location with all settings saved in your .kra file using a single shortcut.
-
-Direct Export allows you to export files to your previously used location with all settings saved in your .kra file using just a single shortcut. Essentially, it provides a small window in the UI where you can export your .kra file (source) to formats like PNG with a predefined set of export settings. The .kra file internally saves the export settings and the final directory path, so all you need to do is open your Krita file and, with a click of the button or shortcut, the file will be exported to the correct directory as the final image. This is particularly useful for keeping your source files in one directory while ensuring you don’t have to remember the location or export settings for your final images.
+Essentially, it provides a small window in the UI where you can export your .kra file (source) to formats like PNG,TGA etc with a predefined set of export settings. The .kra file internally saves the export settings and the final directory path, so all you need to do is open your Krita file and, with a click of the button or shortcut, the file will be exported to the correct directory as the final image. This is particularly useful for keeping your source files in one directory while ensuring you don’t have to remember the location or export settings for your final images.
 
 ### Manual installation
 To install the plugin
@@ -27,3 +26,9 @@ Created by César Sampedro
 
 This plugin is completely free, but if you'd like to buy me a coffee, here's the link:
 https://www.paypal.com/donate/?hosted_button_id=S3LP5V27MNY64
+
+
+## Special thanks (testing)
+Víctor Fernández
+David Revoy
+Maciej Rudnicki
