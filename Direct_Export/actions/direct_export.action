@@ -9,7 +9,7 @@
       <whatsThis></whatsThis>
       <toolTip>Auto-export image to the correct directory.</toolTip>
       <iconText></iconText>
-      <activationFlags>10000</activationFlags>
+      <activationFlags>0</activationFlags>
       <activationConditions>0</activationConditions>
       <shortcut></shortcut>
       <isCheckable>false</isCheckable>

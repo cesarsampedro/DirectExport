@@ -3,7 +3,7 @@ from PyQt5.Qt import *
 import re
 
 DOCKER_TITLE = 'Direct Export'
-DE_VERSION   = '1.0'
+DE_VERSION   = '1.01'
 
 class DEEDocker(DockWidget):
     def __init__(self):
@@ -119,8 +119,8 @@ class DEEDocker(DockWidget):
                     # Check Version 
                     if loaded_settings['DirectExport_Version'] != DE_VERSION:
                         self.mainWidget.setFixedHeight(63)
-                        self.setMinimumHeight(63)
-                        self.setMaximumHeight(63)
+                        self.setMinimumHeight(70)
+                        self.setMaximumHeight(70)
                         self.statusLabelWrongVersion.setVisible(True)
                         print(f"Warning: Config version mismatch. File: {loaded_settings['DirectExport_Version']}, Current: {DE_VERSION}")
                         print("Please download the latest DirectExport version to ensure proper file export\n")
