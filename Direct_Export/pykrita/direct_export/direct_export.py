@@ -1,6 +1,7 @@
 from krita import *
 from PyQt5.Qt import *
 import re
+import platform
 
 DOCKER_TITLE = 'Direct Export'
 DE_VERSION   = '1.01'
@@ -14,6 +15,9 @@ class DEEDocker(DockWidget):
 
         self.txtNotExported   = "  -- Image not exported yet --"
         self.txtInvalidFormat = "  -- Not a Krita file --" 
+
+        self.sistem = platform.system()
+
 
         # Settings default
         self.deeSettings = {
@@ -226,6 +230,12 @@ class DEEDocker(DockWidget):
         for key, value in format_settings.items():
             info_object.setProperty(key, value)
         imageExportPath = self. deeSettings['deeExportPath']
+
+         # Expand ~ in case relative
+        if imageExportPath.startswith('~'):
+                import os
+                imageExportPath = os.path.expanduser(imageExportPath)
+
         success = activeDoc.exportImage(imageExportPath, info_object)
         
         activeDoc.setBatchmode(False) # Disabling quiet exporting
@@ -292,6 +302,14 @@ class DEEDocker(DockWidget):
         # Set default directory and file
         if self.deeSettings['deeExportPath'] and self.deeSettings['deeExportPath'] not in [self.txtNotExported, self.txtInvalidFormat]:
             lastPath = self.deeSettings['deeExportPath']
+
+
+            # Expand ~ in case relative
+            if lastPath.startswith('~'):
+                import os
+                lastPath = os.path.expanduser(lastPath)
+
+
             lastDir = '/'.join(lastPath.split('/')[:-1])
             
             fileDialog.setDirectory(lastDir)
@@ -346,7 +364,22 @@ class DEEDocker(DockWidget):
 
         success = self.export_advanced(activeDoc)
 
+        #Using relative path in case of linux or mac
+        if self.sistem == "Linux" or self.sistem == "Darwin":
+            globalPath = self.deeSettings['deeExportPath']
+
+            import re
+            patron = r"^/home/[^/]+"
+
+            # check and convert to relative
+            if re.match(patron, globalPath):
+                relativePath = re.sub(patron, "~", globalPath)
+                
+                self.deeSettings['deeGlobalPath'] = globalPath  # Guardar el path absoluto
+                self.deeSettings['deeExportPath'] = relativePath  # Path para mostrar
+
         if success:
+            self.setPathDisplay(relativePath) #update window path
             self.deeSettings['DirectExport_Version'] = DE_VERSION  #Added correct exported version to the file
             self.statusLabelWrongVersion.setVisible(False)         #Hides wrong version label telling you about the old plugin
             xml_content = f"""<DirectExport>
