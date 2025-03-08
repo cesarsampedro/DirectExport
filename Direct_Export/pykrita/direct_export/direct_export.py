@@ -4,7 +4,7 @@ import re
 import platform
 
 DOCKER_TITLE = 'Direct Export'
-DE_VERSION   = '1.01'
+DE_VERSION   = '1.02'
 
 class DEEDocker(DockWidget):
     def __init__(self):
