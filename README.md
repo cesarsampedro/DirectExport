@@ -33,3 +33,4 @@ https://www.paypal.com/donate/?hosted_button_id=S3LP5V27MNY64
 - Víctor Fernández
 - David Revoy
 - Maciej Rudnicki
+- Sampo Pesonen
