@@ -44,9 +44,15 @@ class DEEDocker(DockWidget):
         icon2 = self.style().standardIcon(QStyle.SP_ArrowForward)
         self.selectExport.setIcon(icon2)
 
-        self.statusLabelWrongVersion = QLabel("Please update the plugin, old version used to export this image")
-        self.statusLabelWrongVersion.setStyleSheet("color: red;")
+        self.statusLabelWrongVersion = QLabel("This image was exported with a newer plugin version. Please update the plugin ")
+        self.statusLabelWrongVersion.setStyleSheet("color: cyan;")
         self.statusLabelWrongVersion.setAlignment(Qt.AlignLeft)
+        
+        self.statusLabelWrongLink = QLabel("https://github.com/cesarsampedro/DirectExport/releases")
+        self.statusLabelWrongLink.setStyleSheet("color: cyan;")
+        self.statusLabelWrongLink.setAlignment(Qt.AlignLeft)
+        self.statusLabelWrongLink.setOpenExternalLinks(True)
+        self.statusLabelWrongLink.setText('<a href="https://github.com/cesarsampedro/DirectExport/releases">https://github.com/cesarsampedro/DirectExport/releases</a>')
         
         self.selectExportPath.clicked.connect(self.updateExportingPath)
         self.selectExport.clicked.connect(self.export)
@@ -58,6 +64,7 @@ class DEEDocker(DockWidget):
         
         self.layout.addLayout(self.controlsLayout)
         self.layout.addWidget(self.statusLabelWrongVersion)
+        self.layout.addWidget(self.statusLabelWrongLink)
         self.mainWidget.setLayout(self.layout)
         
         self.setWidget(self.mainWidget)
@@ -70,6 +77,7 @@ class DEEDocker(DockWidget):
         self.setMinimumHeight(63)
 
         self.statusLabelWrongVersion.setVisible(False)
+        self.statusLabelWrongLink.setVisible(False)
 
 
     # Update settings when canvas changes
@@ -122,16 +130,19 @@ class DEEDocker(DockWidget):
                     }
 
                     # Check Version 
-                    if loaded_settings['DirectExport_Version'] != DE_VERSION:
+                    
+                    if float(loaded_settings['DirectExport_Version']) > float(DE_VERSION):
                         self.mainWidget.setMinimumHeight(63)
                         self.setMinimumHeight(70)
                         self.statusLabelWrongVersion.setVisible(True)
+                        self.statusLabelWrongLink.setVisible(True)
                         print(f"Warning: Config version mismatch. File: {loaded_settings['DirectExport_Version']}, Current: {DE_VERSION}")
                         print("Please download the latest DirectExport version to ensure proper file export\n")
                     else:
                         self.mainWidget.setMinimumHeight(60)
                         self.setMinimumHeight(60)
                         self.statusLabelWrongVersion.setVisible(False)
+                        self.statusLabelWrongLink.setVisible(False)
 
 
                     # Parse export settings
