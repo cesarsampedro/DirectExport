@@ -62,12 +62,13 @@ class DEEDocker(DockWidget):
         
         self.setWidget(self.mainWidget)
 
-        self.mainWidget.setFixedHeight(63)
-        size_policy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        #widget size
+        self.mainWidget.setMinimumHeight(63)
+        size_policy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
         self.mainWidget.setSizePolicy(size_policy)
-        self.setFeatures(QDockWidget.DockWidgetClosable | QDockWidget.DockWidgetMovable)
+        self.setFeatures(QDockWidget.DockWidgetClosable | QDockWidget.DockWidgetMovable | QDockWidget.DockWidgetFloatable)
         self.setMinimumHeight(63)
-        self.setMaximumHeight(63)
+
         self.statusLabelWrongVersion.setVisible(False)
 
 
@@ -122,16 +123,14 @@ class DEEDocker(DockWidget):
 
                     # Check Version 
                     if loaded_settings['DirectExport_Version'] != DE_VERSION:
-                        self.mainWidget.setFixedHeight(63)
+                        self.mainWidget.setMinimumHeight(63)
                         self.setMinimumHeight(70)
-                        self.setMaximumHeight(70)
                         self.statusLabelWrongVersion.setVisible(True)
                         print(f"Warning: Config version mismatch. File: {loaded_settings['DirectExport_Version']}, Current: {DE_VERSION}")
                         print("Please download the latest DirectExport version to ensure proper file export\n")
                     else:
-                        self.mainWidget.setFixedHeight(60)
+                        self.mainWidget.setMinimumHeight(60)
                         self.setMinimumHeight(60)
-                        self.setMaximumHeight(60)
                         self.statusLabelWrongVersion.setVisible(False)
 
 
