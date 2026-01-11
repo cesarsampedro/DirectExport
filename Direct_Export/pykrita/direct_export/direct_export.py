@@ -2,9 +2,10 @@ from krita import *
 from PyQt5.Qt import *
 import re
 import platform
+import os
 
 DOCKER_TITLE = 'Direct Export'
-DE_VERSION   = '1.02'
+DE_VERSION   = '1.03'
 
 class DEEDocker(DockWidget):
     def __init__(self):
@@ -241,10 +242,14 @@ class DEEDocker(DockWidget):
             info_object.setProperty(key, value)
         imageExportPath = self. deeSettings['deeExportPath']
 
-         # Expand ~ in case relative
+        # Expand ~ in case relative``
         if imageExportPath.startswith('~'):
                 import os
                 imageExportPath = os.path.expanduser(imageExportPath)
+
+        # On Windows, swap  / to \
+        if self.sistem == "Windows":
+            imageExportPath = imageExportPath.replace('/', '\\')
 
         success = activeDoc.exportImage(imageExportPath, info_object)
         
@@ -369,58 +374,84 @@ class DEEDocker(DockWidget):
         return False
 
     def updateExportingPath(self):
-        app = Krita.instance()
-        activeDoc = app.activeDocument()
+            app = Krita.instance()
+            activeDoc = app.activeDocument()
 
-        success = self.export_advanced(activeDoc)
+            success = self.export_advanced(activeDoc)
 
-        #Using relative path in case of linux or mac
-        if self.sistem == "Linux" or self.sistem == "Darwin":
-            globalPath = self.deeSettings['deeExportPath']
-
-            import re
-            patron = r"^/home/[^/]+"
-
-            # check and convert to relative
-            if re.match(patron, globalPath):
-                relativePath = re.sub(patron, "~", globalPath)
+            if success:
+                # define route
+                pathToDisplay = self.deeSettings['deeExportPath']
                 
-                self.deeSettings['deeGlobalPath'] = globalPath  # Guardar el path absoluto
-                self.deeSettings['deeExportPath'] = relativePath  # Path para mostrar
+                # create route based on system
+                if self.sistem == "Linux" or self.sistem == "Darwin":
+                    # Linux/Mac /home/usuario/...   ~/...
+                    globalPath = self.deeSettings['deeExportPath']
+                    patron = r"^/home/[^/]+"
 
-        if success:
-            self.setPathDisplay(relativePath) #update window path
-            self.deeSettings['DirectExport_Version'] = DE_VERSION  #Added correct exported version to the file
-            self.statusLabelWrongVersion.setVisible(False)         #Hides wrong version label telling you about the old plugin
-            xml_content = f"""<DirectExport>
-        <DirectExport_Version>{self.deeSettings['DirectExport_Version']}</DirectExport_Version>
-        <deeExportPath>{self.deeSettings['deeExportPath']}</deeExportPath>
-        <exportSettings>"""
-            
-            for key, value in self.deeSettings['exportSettings'].items():
-                if key == 'transparencyFillcolor':
-                    escaped_value = value.replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
-                    xml_content += f"\n        <{key}>{escaped_value}</{key}>"
+                    if re.match(patron, globalPath):
+                        relativePath = re.sub(patron, "~", globalPath)
+                        self.deeSettings['deeGlobalPath'] = globalPath  # Guardar el path absoluto
+                        self.deeSettings['deeExportPath'] = relativePath  # Path para mostrar
+                        pathToDisplay = relativePath
+                        
+                elif self.sistem == "Windows":
+                    # Windows C:\Users\usuario\...   ~\...
+                    globalPath = self.deeSettings['deeExportPath']
+                    
+                    # Get user path
+                    user_profile = os.path.expanduser("~")
+                    # Fix bars
+                    user_profile_normalized = user_profile.replace('/', '\\')
+                    globalPath_normalized = globalPath.replace('/', '\\')
+                    
+                    # Detect windows user
+                    patron_windows = r"^[A-Za-z]:\\Users\\[^\\]+"
+                    
+                    if re.match(patron_windows, globalPath_normalized, re.IGNORECASE):
+                        # Chnage user route with ~
+                        if globalPath_normalized.lower().startswith(user_profile_normalized.lower()):
+                            relativePath = globalPath_normalized.replace(user_profile_normalized, "~", 1)
+                            self.deeSettings['deeGlobalPath'] = globalPath
+                            self.deeSettings['deeExportPath'] = relativePath
+                            pathToDisplay = relativePath
+
+                self.setPathDisplay(pathToDisplay) #update window path
+                self.deeSettings['DirectExport_Version'] = DE_VERSION  #Added correct exported version to the file
+                self.statusLabelWrongVersion.setVisible(False)         #Hides wrong version label telling you about the old plugin
+                
+                # fixing bars
+                xmlSafePath = self.deeSettings['deeExportPath'].replace('\\', '/')
+                
+                xml_content = f"""<DirectExport>
+            <DirectExport_Version>{self.deeSettings['DirectExport_Version']}</DirectExport_Version>
+            <deeExportPath>{xmlSafePath}</deeExportPath>
+            <exportSettings>"""
+                
+                for key, value in self.deeSettings['exportSettings'].items():
+                    if key == 'transparencyFillcolor':
+                        escaped_value = value.replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
+                        xml_content += f"\n        <{key}>{escaped_value}</{key}>"
+                    else:
+                        xml_content += f"\n        <{key}>{value}</{key}>"
+                    
+                xml_content += "\n    </exportSettings>\n</DirectExport>"
+                
+                # Add settings into the description section of the .kra file
+                doc_info = activeDoc.documentInfo()
+                new_info = re.sub(
+                    r'<abstract><!\[CDATA\[([^]]*)\]\]></abstract>',
+                    f'<abstract><![CDATA[{xml_content}]]></abstract>',
+                    doc_info
+                )
+                activeDoc.setDocumentInfo(new_info)
+
+                if activeDoc.fileName():
+                    activeDoc.save()
+                    print("Document saved")
+                    print(xml_content)
                 else:
-                    xml_content += f"\n        <{key}>{value}</{key}>"
-                
-            xml_content += "\n    </exportSettings>\n</DirectExport>"
-            
-            # Add settings into the description section of the .kra file
-            doc_info = activeDoc.documentInfo()
-            new_info = re.sub(
-                r'<abstract><!\[CDATA\[([^]]*)\]\]></abstract>',
-                f'<abstract><![CDATA[{xml_content}]]></abstract>',
-                doc_info
-            )
-            activeDoc.setDocumentInfo(new_info)
-
-            if activeDoc.fileName():
-                activeDoc.save()
-                print("Document saved")
-                print(xml_content)
-            else:
-                print("Document needs to be saved")
+                    print("Document needs to be saved")
 
 
     def setPathDisplay(self,path=None):

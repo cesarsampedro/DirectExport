@@ -1,4 +1,6 @@
 *.zip
 run.sh
+build_and_zip.sh
 TODO.md
-Builds/
+target/
+
